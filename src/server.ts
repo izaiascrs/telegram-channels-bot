@@ -48,10 +48,47 @@ const channelsInfo = [
     name: 'Teste Bot 2',
     waitingForSignal: false,
   },
+
   {
     type: 'Channel',
     id: -1001695472706,
     name: 'MOQ|Master Of Quotex',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id:  -1001194604848,
+    name: '🏳 CONSYSTE TRADERS 🏴'      ,
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id:  -1001786822830,
+    name: 'Canal Oficial | MOHAMED ®'  ,
+    waitingForSignal: false,
+  },  
+  {
+    type: 'Channel',
+    id:  -1002137003427,
+    name: 'Canal teste',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id:  -1001296434684,
+    name: 'Olymp Trade Quotex Signals',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id:  -1001942617161,
+    name: 'MASHALLAH TRADER🌹',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id:  -1001724386836,
+    name: 'Technical Hitesh',
     waitingForSignal: false,
   },
 ];
