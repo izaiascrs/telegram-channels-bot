@@ -32,16 +32,16 @@ export function checkIfStickIsCallOrPut(media: Api.MessageMediaDocument) {
 }
 
 export function createNewSignalMesage(
-  { currencyPair, time, hours, signal }:
-  { currencyPair: string, time: string, hours: string, signal: RegExpExecArray | null }
+  { currencyPair, time, hours, signal, channelName }:
+  { currencyPair: string, time: string, hours: string, signal: RegExpExecArray | null, channelName: string }
 ) {
   if (signal && signal.length) {
     const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
     const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
-    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${hours.length ? '⏰' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
+    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 📛 **${channelName}** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${hours.length ? '⏰' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
     return formatedMessage;
   } else {
-    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
+    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n 📛 **${channelName}** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
     return formatedMessage;
   }
 }

@@ -49,6 +49,7 @@ const channelsInfo = [
     waitingForSignal: false,
   },
 
+  //************ official channels watch list ************//
   {
     type: 'Channel',
     id: -1001695472706,
@@ -69,8 +70,8 @@ const channelsInfo = [
   },  
   {
     type: 'Channel',
-    id:  -1002137003427,
-    name: 'Canal teste',
+    id:  -1001618524236,
+    name: 'BULLISH QUEEN 🎯',
     waitingForSignal: false,
   },
   {
@@ -89,6 +90,18 @@ const channelsInfo = [
     type: 'Channel',
     id:  -1001724386836,
     name: 'Technical Hitesh',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id: -1001785019775,
+    name: 'QUOTEX BUG SIGNALS 🤯🚀',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id: -1001504485479,
+    name: 'CONSYSTE 1 GALE (FREE)',
     waitingForSignal: false,
   },
 ];
@@ -157,9 +170,12 @@ const destinationList = [myId];
                 signal = checkIfMessageHasSignal(message.message);
               }
 
-              const signalMessage = createNewSignalMesage({ currencyPair, time, hours, signal });
+              const channelName = channelInfo.name;
+
+              const signalMessage = createNewSignalMesage({ currencyPair, time, hours, signal, channelName });
               const messageObj = { message: signalMessage }
               await sendMessagesToDestinationList(client, messageObj, destinationList);
+
               if(signal === null || hours.length === 0) {
                 channelInfo.waitingForSignal = true;
               }
@@ -178,9 +194,9 @@ const destinationList = [myId];
           }          
         }
 
-        if (message.media && message.media.className === 'MessageMediaDocument') {
+        if (message.media && message.media.className === 'MessageMediaDocument') {          
           if(hasChannelWaitingForSignal?.waitingForSignal) {
-            const isCallOrPut = checkIfStickIsCallOrPut(message.media);            
+            const isCallOrPut = checkIfStickIsCallOrPut(message.media);
             if(isCallOrPut) {
               const CALL_PUT = createTradeSignalMessage(isCallOrPut);
               const messageObj = { message: CALL_PUT }
@@ -190,6 +206,7 @@ const destinationList = [myId];
           }
         }
       }
+
       console.log(channelInfo?.waitingForSignal);
     }
 
