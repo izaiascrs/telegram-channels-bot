@@ -1,9 +1,6 @@
 import { Api } from "telegram";
-
-const currencies = ["AUDUSD", "USDBRL", "EURUSD", "USDARS", "USDEGP", "USDINR", "USDTRY", "AUDCAD", "GBPAUD", "GBPJPY", "USDCOP", "USDIDR", "USDMXN", "CADJPY", "EURCHF", "EURGBP", "NZDCHF", "USDCAD", "USDCHF", "USDNGN", "EURCAD", "NZDCAD", "USDJPY", "USDPHP", "CADCHF", "NZDJPY", "AUDJPY", "CHFJPY", "EURJPY", "USDPKR", "AUDCHF", "USDBDT", "USDDZD"];
-const currenciesLookup = currencies.reduce((acc, v) => {
-  return acc.set(v, true);
-}, new Map());
+import { NewMessageEvent } from "telegram/events";
+import { currencies, currenciesLookup } from "../currencies";
 
 export function checkIfStickIsCallOrPut(media: Api.MessageMediaDocument) {
   const document = media.document as Api.Document;
@@ -63,23 +60,28 @@ export function extractDataFromMessage(msg: string) {
   }
 
   if (time?.length) {
-    const formatedTime = time[0].replace(/\s/, "").split("").join(" ");
-    timeCurrencyPair.time = formatedTime.toUpperCase();
+    const formatedTime = time[0].replace(/\s/, "").split("").join(" ").toUpperCase();
+    timeCurrencyPair.time = formatedTime;
   } else {
-    const time = /m\s?\d/gi.exec(msg);
+    const time = /m\s?\d/gi.exec(msg); // M5 M 5
     if (time?.length) {
-      timeCurrencyPair.time = time[0].split('').reverse().join('');
+      const formatedTime = time[0].split('').reverse().join(' ');
+      timeCurrencyPair.time = formatedTime;
     }
   }
 
   if (currencyPair?.length) {
-    const formatedPair = currencyPair[0].replace(/\s/, '/');
-    timeCurrencyPair.currencyPair = formatedPair;
+    const pair = currencyPair[0].replace(/\s?\//g, '')
+    const isValidCurrencyPair = currenciesLookup.has(pair);
+    if(isValidCurrencyPair) {
+      const formatedPair = currencyPair[0].replace(/\s/, '/');
+      timeCurrencyPair.currencyPair = formatedPair;      
+    }
   } else {
     const currencyPair = /\b[A-Z]{6}\b/g.exec(msg);
     if (currencyPair?.length) {
-      const isCurrencyPair = currenciesLookup.has(currencyPair[0]);
-      if (isCurrencyPair) {
+      const isValidCurrencyPair = currenciesLookup.has(currencyPair[0]);
+      if (isValidCurrencyPair) {
         timeCurrencyPair.currencyPair = currencyPair[0].replace(/(\w{3})/, '$1/')
       }
     }
@@ -106,4 +108,24 @@ export function checkIfSignalMessageIsCallOrPut(msg: string) {
   const callRegex = /👆|👍|CALL|UP|COMPRA/gi.exec(msg);
   if (callRegex?.length) return "CALL";
   return "PUT";
+}
+
+export function isSticker(media: Api.TypeMessageMedia | undefined) {
+  return media && media.className === 'MessageMediaDocument';
+}
+
+export function isValidMessage(msg: string) {
+  return msg.length > 0 && msg.length < 200;
+}
+
+export function extractDataFromMessageEvent(event: NewMessageEvent) {
+  const messageData = {
+    chatId: parseInt(String(event.chatId)),
+    isChannel: event.isChannel,
+    isGroup: event.isGroup,
+    isPrivate: event.isPrivate,
+    message: event.message.message,
+    media: event?.message?.media,
+  }
+  return messageData;  
 }

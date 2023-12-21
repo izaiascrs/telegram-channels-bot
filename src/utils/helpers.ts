@@ -1,6 +1,10 @@
 import { Api, TelegramClient } from "telegram";
 import input from 'input';
 
+type TMessage = {
+  message: string,
+}
+
 async function listContacts(client: TelegramClient) {
   try {
 
@@ -50,10 +54,6 @@ async function listDialogs(client: TelegramClient) {
   }))
 
   return dialogs;
-}
-
-type TMessage = {
-  message: string,
 }
 
 async function sendMessagesToDestinationList(client: TelegramClient, messageObj: TMessage, destinationListArray: number[]) {

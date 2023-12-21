@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node build/server.js",
+    "start": "node build/server.js",
     "dev": "npx tsx watch src/server.ts",
     "build": "rimraf ./build && tsc"
   },
