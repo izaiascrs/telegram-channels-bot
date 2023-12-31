@@ -1,9 +1,12 @@
 import { Api, TelegramClient } from "telegram";
 import input from 'input';
+import { advertiveMessages } from "../advertise-messages";
 
 type TMessage = {
   message: string,
 }
+
+let advertiseMessageIndex = 0;
 
 async function listContacts(client: TelegramClient) {
   try {
@@ -61,4 +64,39 @@ async function sendMessagesToDestinationList(client: TelegramClient, messageObj:
   await Promise.all(promises);
 }
 
-export { listContacts, listDialogs, initialSetup, sendMessagesToDestinationList };
+async function sendAdvertiseMessageToDestinationList(client: TelegramClient, destinationListArray: number[]) {
+  if(advertiseMessageIndex >= advertiveMessages.length) {
+    advertiseMessageIndex = 0;
+  }
+
+  const currentMessage = advertiveMessages[advertiseMessageIndex];
+  advertiseMessageIndex++;
+
+  const promises = destinationListArray.map((dest) => client.sendMessage(dest, currentMessage));
+  await Promise.all(promises);
+}
+
+async function sendMandatoryMessage(client: TelegramClient, destinationListArray: number[]) {
+  const msgOb = {
+    message: '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n' +
+    '\n' +
+    '⚠️ ATENÇÃO ‼️\n' +
+    '\n' +
+    '\n' +
+    'Teremos um novo sinal a qualquer momento📉📈\n' +
+    '\n' +
+    '👀 👀👉** ESTEJAM ATENTOS! ** 👀 👀',
+  }
+
+  const promises = destinationListArray.map((dest) => client.sendMessage(dest, msgOb))
+  await Promise.all(promises);
+}
+
+export {
+  listContacts,
+  listDialogs,
+  initialSetup,
+  sendMessagesToDestinationList,
+  sendAdvertiseMessageToDestinationList,
+  sendMandatoryMessage
+};

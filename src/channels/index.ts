@@ -6,7 +6,25 @@ export type TChannelInfo = {
 };
 
 // ************ channels watch list ************ //
-export const channelsWatchList: TChannelInfo[] = [  
+export const channelsWatchList: TChannelInfo[] = [
+  {
+    id: -1002137003427,
+    name: 'Canal teste',
+    waitingForSignal: false,
+    type: 'Channel'
+  },
+  {
+    type: 'Channel',
+    id:  -1001625871874,
+    name: 'SinaisOB - M1',
+    waitingForSignal: false,
+  },
+  {
+    type: 'Channel',
+    id: -1001630460062,
+    name: 'SinaisOB - M5',
+    waitingForSignal: false,
+  },
   {
     type: 'Channel',
     id: -1001695472706,
@@ -16,13 +34,13 @@ export const channelsWatchList: TChannelInfo[] = [
   {
     type: 'Channel',
     id:  -1001194604848,
-    name: '🏳 CONSYSTE TRADERS 🏴'      ,
+    name: '🏳 CONSYSTE TRADERS 🏴',
     waitingForSignal: false,
   },
   {
     type: 'Channel',
     id:  -1001786822830,
-    name: 'Canal Oficial | MOHAMED ®'  ,
+    name: 'Canal Oficial | MOHAMED ®',
     waitingForSignal: false,
   },  
   {

@@ -96,6 +96,43 @@ export function extractDataFromMessage(msg: string) {
   return timeCurrencyPair;
 }
 
+export function extractDataFromEspecialChannelMessage(msg: string) {
+  const time = /m\s?\d/gi.exec(msg); // M5 M 5
+  const currencyPair = /\b[A-Z]{6}\b.*/g.exec(msg); // select 3 uppercase char followed by space or backslash followed 3 uppercase char  
+  const hours = /(?<!-)\d{2}:\d{2}/gm.exec(msg);
+  const result = /resultado/gim.exec(msg);
+
+  const isOTC = (cPair: string) => /otc/gi.test(cPair);
+
+  const timeCurrencyPair = {
+    currencyPair: '',
+    time: '',
+    hours: '',
+  }
+
+  if(result?.length) return timeCurrencyPair;
+
+  if (time?.length) {
+    const formatedTime = time[0].split('').reverse().join(' ');
+    timeCurrencyPair.time = formatedTime;
+  }
+  
+  if (currencyPair?.length) {
+    if(!isOTC(currencyPair[0])) {
+      const isValidCurrencyPair = currenciesLookup.has(currencyPair[0]);
+      if (isValidCurrencyPair) {
+        timeCurrencyPair.currencyPair = currencyPair[0].replace(/(\w{3})/, '$1/')
+      }
+    }
+  }
+
+  if (hours?.length) {
+    timeCurrencyPair.hours = hours[0];
+  }
+
+  return timeCurrencyPair;
+}
+
 export function checkIfMessageHasSignal(msg: string) {
   let signal = /👎|👍|👇|👆|CALL|PUT|UP|DOWN|COMPRA|VENDA/g.exec(msg); // signals only uppercase
   if(!signal) {
@@ -115,7 +152,7 @@ export function isSticker(media: Api.TypeMessageMedia | undefined) {
 }
 
 export function isValidMessage(msg: string) {
-  return msg.length > 0 && msg.length < 200;
+  return msg.length > 0 && msg.length < 250;
 }
 
 export function extractDataFromMessageEvent(event: NewMessageEvent) {

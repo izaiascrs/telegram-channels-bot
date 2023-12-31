@@ -5,19 +5,22 @@ import 'dotenv/config';
 
 import { destinationListIds } from './destination-list';
 
-import { 
+import {
   listContacts,
   listDialogs,
   initialSetup,
-  sendMessagesToDestinationList
+  sendMessagesToDestinationList,
+  sendAdvertiseMessageToDestinationList,
+  sendMandatoryMessage
 } from './utils/helpers';
 
-import { 
+import {
   checkIfMessageHasSignal,
   checkIfSignalMessageIsCallOrPut,
   checkIfStickIsCallOrPut,
   createNewSignalMesage,
   createTradeSignalMessage,
+  extractDataFromEspecialChannelMessage,
   extractDataFromMessage,
   extractDataFromMessageEvent,
   isSticker,
@@ -28,6 +31,7 @@ import {
   checkIfMessageIsFromDifferentChannel,
   findChannelById,
   findChannelBySignal,
+  isEspecialChannel,
   setChannelWaintingForSignal
 } from './utils/handle-channels';
 
@@ -46,16 +50,16 @@ let signalTimeout: NodeJS.Timeout | null = null;
 
 function createSignalTimeout() {
   return signalTimeout = setTimeout(() => {
-    console.log('reset signal');    
+    console.log('reset signal');
     const channelBySignal = findChannelBySignal(true);
-    if(channelBySignal) setChannelWaintingForSignal(channelBySignal.id, false);
+    if (channelBySignal) setChannelWaintingForSignal(channelBySignal.id, false);
     clearSignalTimeout();
   }, MAX_TIME_TO_WATING_FOR_SIGNAL);
 }
 
 function clearSignalTimeout() {
-  console.log('clear timeout');  
-  if(signalTimeout) clearTimeout(signalTimeout);
+  console.log('clear timeout');
+  if (signalTimeout) clearTimeout(signalTimeout);
   return signalTimeout = null;
 }
 
@@ -69,38 +73,47 @@ function clearSignalTimeout() {
 
   await client.connect();
   await client.getDialogs();
+  
 
   client.addEventHandler(messageHandler, new NewMessage({}));
 
   async function messageHandler(event: NewMessageEvent) {
     const messageData = extractDataFromMessageEvent(event);
 
-    if(messageData.isChannel) {
+    if (messageData.isChannel) {
       const channelById = findChannelById(messageData.chatId);
       const channelBySignal = findChannelBySignal(true);
-     
-      if(checkIfMessageIsFromDifferentChannel(channelById, channelBySignal)) return;
 
-      if(channelById) {
+      if (checkIfMessageIsFromDifferentChannel(channelById, channelBySignal)) return;
 
-        if(isValidMessage(messageData.message)) {
-          if(channelBySignal?.waitingForSignal) {
+      if (channelById) {
+        if (isValidMessage(messageData.message)) {
+          if (channelBySignal?.waitingForSignal) {
             const signal = checkIfMessageHasSignal(messageData.message);
-            if(signal?.length) {
+            if (signal?.length) {
               const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
               const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
               const messageObj = { message: CALL_PUT_MESSAGE }
-              await sendMessagesToDestinationList(client, messageObj, destinationListIds);              
+              await sendMessagesToDestinationList(client, messageObj, destinationListIds);
               setChannelWaintingForSignal(channelById.id, false);
+              await sendAdvertiseMessageToDestinationList(client, destinationListIds);
+              await sendMandatoryMessage(client, destinationListIds);
               clearSignalTimeout();
             }
           } else {
-            const { currencyPair, time, hours } = extractDataFromMessage(messageData.message);
-  
-            if(currencyPair.length && time.length) {
+
+            const { currencyPair, time, hours } = 
+              isEspecialChannel(messageData.chatId) 
+              ? extractDataFromEspecialChannelMessage(messageData.message)
+              : extractDataFromMessage(messageData.message);
+
+              console.log( { currencyPair, time, hours, isEspecialChannel: isEspecialChannel(messageData.chatId) });
+              
+
+            if (currencyPair.length && time.length) {
               let signal: RegExpExecArray | null = null;
 
-              if(hours.length > 0) {
+              if (hours.length > 0) {
                 signal = checkIfMessageHasSignal(messageData.message);
               }
 
@@ -109,20 +122,22 @@ function clearSignalTimeout() {
               const messageObj = { message: signalMessage }
               await sendMessagesToDestinationList(client, messageObj, destinationListIds);
 
-              if(signal === null || hours.length === 0) {
+              if (signal === null || hours.length === 0) {
                 setChannelWaintingForSignal(channelById.id, true);
                 createSignalTimeout();
               }
             }
 
             const signal = checkIfMessageHasSignal(messageData.message);
-            if(signal === null || hours.length === 0) { 
-              if(signal?.length && channelById.waitingForSignal) {
+            if (signal === null || hours.length === 0) {
+              if (signal?.length && channelById.waitingForSignal) {
                 const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
                 const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
                 const messageObj = { message: CALL_PUT_MESSAGE }
                 await sendMessagesToDestinationList(client, messageObj, destinationListIds);
                 setChannelWaintingForSignal(channelById.id, false);
+                await sendAdvertiseMessageToDestinationList(client, destinationListIds);
+                await sendMandatoryMessage(client, destinationListIds);
                 clearSignalTimeout();
               }
             }
@@ -130,13 +145,15 @@ function clearSignalTimeout() {
         }
 
         if (isSticker(messageData.media)) {
-          if(channelBySignal?.waitingForSignal) {
+          if (channelBySignal?.waitingForSignal) {
             const isCallOrPut = checkIfStickIsCallOrPut(messageData.media as Api.MessageMediaDocument);
-            if(isCallOrPut) {
+            if (isCallOrPut) {
               const CALL_PUT = createTradeSignalMessage(isCallOrPut);
               const messageObj = { message: CALL_PUT }
               await sendMessagesToDestinationList(client, messageObj, destinationListIds);
               setChannelWaintingForSignal(channelById.id, false);
+              await sendAdvertiseMessageToDestinationList(client, destinationListIds);
+              await sendMandatoryMessage(client, destinationListIds);
               clearSignalTimeout();
             }
           }
