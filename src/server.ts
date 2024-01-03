@@ -75,7 +75,7 @@ function clearSignalTimeout() {
 
   await client.connect();
   await client.getDialogs();
-
+ 
   client.addEventHandler(messageHandler, new NewMessage({}));
 
   async function messageHandler(event: NewMessageEvent) {
@@ -126,7 +126,7 @@ function clearSignalTimeout() {
 
               if (signal === null || hours.length === 0) {
                 setChannelWaintingForSignal(channelById.id, true);
-                createSignalTimeout();
+                createSignalTimeout();     
               }
 
               await sendMessagesToDestinationList(client, messageObj, destinationListIds);
@@ -151,16 +151,15 @@ function clearSignalTimeout() {
                 const messageObj = { message: CALL_PUT_MESSAGE }
                 await sendMessagesToDestinationList(client, messageObj, destinationListIds);
                 await sendMandatoryMessage(client, destinationListIds);
+                setChannelWaintingForSignal(channelById.id, false);
+                clearSignalTimeout();
+                msgCount++;
+
 
                 if(msgCount === MAX_MESSAGES_BEFORE_ADVERTISE) {
                   await sendAdvertiseMessageToDestinationList(client, destinationListIds);
                   msgCount = 0;
                 }
-
-                setChannelWaintingForSignal(channelById.id, false);
-                clearSignalTimeout();
-                msgCount++;
-
               }
             }
           }
