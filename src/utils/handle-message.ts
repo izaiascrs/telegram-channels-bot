@@ -35,16 +35,18 @@ export function createNewSignalMesage(
   if (signal && signal.length) {
     const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
     const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
-    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 📛 **${channelName}** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${hours.length ? '⏰' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
+    // const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 📛 **${channelName}** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${hours.length ? '⏰' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
+    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${ hours.length ? '⏰ ' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
     return formatedMessage;
   } else {
-    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n 📛 **${channelName}** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
+    // const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n 📛 **${channelName}** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
+    const formatedMessage = `⚠ **ATENÇÃO TRADERS!** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
     return formatedMessage;
   }
 }
 
 export function createTradeSignalMessage(signal: 'CALL' | 'PUT') {
-  const message = signal === 'CALL' ? '🟢👆 COMPRA' : '🔴👇 VENDA';
+  const message = signal === 'CALL' ? '🟢👆 **COMPRA** 👆🟢' : '🔴👇 **VENDA** 👇🔴';
   return message;
 }
 
@@ -71,8 +73,9 @@ export function extractDataFromMessage(msg: string) {
   }
 
   if (currencyPair?.length) {
-    const pair = currencyPair[0].replace(/\s?\//g, '')
+    const pair = currencyPair[0].replace(/\s?\/?/g, '')
     const isValidCurrencyPair = currenciesLookup.has(pair);
+    
     if(isValidCurrencyPair) {
       const formatedPair = currencyPair[0].replace(/\s/, '/');
       timeCurrencyPair.currencyPair = formatedPair;      
@@ -152,7 +155,9 @@ export function isSticker(media: Api.TypeMessageMedia | undefined) {
 }
 
 export function isValidMessage(msg: string) {
-  return msg.length > 0 && msg.length < 250;
+  const isBalanceMessage = /relatório|relatorio|resultado|result/gim.test(msg);
+  const isMessageBetweenRange = (msg.length > 0 && msg.length < 250);
+  return isMessageBetweenRange && !isBalanceMessage;
 }
 
 export function extractDataFromMessageEvent(event: NewMessageEvent) {

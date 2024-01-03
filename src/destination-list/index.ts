@@ -1,9 +1,12 @@
 const destinationList = [
+  // ***** channel to send ************ //
   // {
   //   type: 'Channel',
   //   id: 1870260708,
-  //   name: '📉TOP TRADERS QUOTEX FREE📈',
+  //   name: '📉 QUOTEX - COMUNIDADE DOS TRADERS VIP 👥'  
   // },
+  // ***** channel to send ************ //
+
   // {
   //   type: 'Channel',
   //   id: 1933838176,
@@ -14,6 +17,7 @@ const destinationList = [
   //   id: 1944489390,
   //   name: 'TOP TRADERS QUOTEX VIP',
   // },
+ 
   {
     type: 'Channel',
     id: 2138548602,
@@ -23,16 +27,6 @@ const destinationList = [
   //   type: 'User',
   //   id: 6018633227,
   //   name: 'izaias',
-  // },
-  // {
-  //   type: 'Chat',
-  //   id: 4037329961,
-  //   name: 'Grupo destino'
-  // },
-  // {
-  //   type: 'Chat',
-  //   id: 4072662222,
-  //   name: 'Grupo origem',
   // },
 ]
 
