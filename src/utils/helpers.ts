@@ -1,12 +1,14 @@
 import { Api, TelegramClient } from "telegram";
 import input from 'input';
 import { advertiveMessages } from "../advertise-messages";
+import { howToTradeMessages } from "../how-to-trade-messages";
 
 type TMessage = {
   message: string,
 }
 
 let advertiseMessageIndex = 0;
+let hotToTradeMessageIndex = 0;
 
 async function listContacts(client: TelegramClient) {
   try {
@@ -76,6 +78,17 @@ async function sendAdvertiseMessageToDestinationList(client: TelegramClient, des
   await Promise.all(promises);
 }
 
+async function sendHowToTradeMessageToDestinationList(client: TelegramClient, destinationListArray: number[]) {
+  if(hotToTradeMessageIndex >= howToTradeMessages.length) {
+    hotToTradeMessageIndex = 0;
+  }
+
+  const currentMessage = howToTradeMessages[hotToTradeMessageIndex];   
+  const promises = destinationListArray.map((dest) => client.sendMessage(dest, currentMessage));
+  await Promise.all(promises);
+  hotToTradeMessageIndex++;
+}
+
 async function sendMandatoryMessage(client: TelegramClient, destinationListArray: number[]) {
   const msgOb = {
     message: '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n' +
@@ -98,5 +111,6 @@ export {
   initialSetup,
   sendMessagesToDestinationList,
   sendAdvertiseMessageToDestinationList,
-  sendMandatoryMessage
+  sendMandatoryMessage,
+  sendHowToTradeMessageToDestinationList
 };

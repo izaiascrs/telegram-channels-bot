@@ -11,7 +11,8 @@ import {
   initialSetup,
   sendMessagesToDestinationList,
   sendAdvertiseMessageToDestinationList,
-  sendMandatoryMessage
+  sendMandatoryMessage,
+  sendHowToTradeMessageToDestinationList
 } from './utils/helpers';
 
 import {
@@ -34,6 +35,7 @@ import {
   isEspecialChannel,
   setChannelWaintingForSignal
 } from './utils/handle-channels';
+import { howToTradeMessages } from './how-to-trade-messages';
 
 const SESSION_TOKEN = process.env.SESSION_TOKEN;
 const API_HASH = process.env.API_HASH;
@@ -46,7 +48,10 @@ const stringSession = new StringSession(SESSION_TOKEN);
 const TEN_MINUTES = 1000 * 60 * 10;
 const MAX_TIME_TO_WATING_FOR_SIGNAL = TEN_MINUTES;
 const MAX_MESSAGES_BEFORE_ADVERTISE = 4;
+const MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE = 5;
+
 let msgCount = 0;
+let msgCountToHowToTrade = 0;
 
 let signalTimeout: NodeJS.Timeout | null = null;
 
@@ -79,6 +84,7 @@ function clearSignalTimeout() {
   client.addEventHandler(messageHandler, new NewMessage({}));
 
   async function messageHandler(event: NewMessageEvent) {
+
     const messageData = extractDataFromMessageEvent(event);
    
     if (messageData.isChannel) {
@@ -87,7 +93,7 @@ function clearSignalTimeout() {
 
       if (checkIfMessageIsFromDifferentChannel(channelById, channelBySignal)) return;
 
-      if (channelById) {        
+      if (channelById) {
         if (isValidMessage(messageData.message)) {          
           
           if (channelBySignal?.waitingForSignal) {
@@ -101,10 +107,16 @@ function clearSignalTimeout() {
               await sendMandatoryMessage(client, destinationListIds);
               clearSignalTimeout();
               msgCount++;
+              msgCountToHowToTrade++
 
               if(msgCount === MAX_MESSAGES_BEFORE_ADVERTISE) {
                 await sendAdvertiseMessageToDestinationList(client, destinationListIds);
                 msgCount = 0;
+              }
+
+              if(msgCountToHowToTrade === MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
+                await sendHowToTradeMessageToDestinationList(client, destinationListIds);
+                msgCountToHowToTrade = 0;
               }
             }
           } else {
@@ -112,6 +124,9 @@ function clearSignalTimeout() {
               isEspecialChannel(messageData.chatId) 
                 ? extractDataFromEspecialChannelMessage(messageData.message)
                 : extractDataFromMessage(messageData.message);
+
+                console.log({ currencyPair, time, hours });
+                
                             
             if (currencyPair.length && time.length) {
               let signal: RegExpExecArray | null = null;
@@ -133,10 +148,18 @@ function clearSignalTimeout() {
 
               if((currencyPair.length) && (time.length) && (hours.length) && (signal?.length)) {
                 msgCount++;
+                msgCountToHowToTrade++;
+
                 await sendMandatoryMessage(client, destinationListIds);
+
                 if(msgCount === MAX_MESSAGES_BEFORE_ADVERTISE) {
                   await sendAdvertiseMessageToDestinationList(client, destinationListIds);
                   msgCount = 0;
+                }
+
+                if(msgCountToHowToTrade === MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
+                  await sendHowToTradeMessageToDestinationList(client, destinationListIds);
+                  msgCountToHowToTrade = 0;
                 }
               }
 
@@ -153,12 +176,18 @@ function clearSignalTimeout() {
                 await sendMandatoryMessage(client, destinationListIds);
                 setChannelWaintingForSignal(channelById.id, false);
                 clearSignalTimeout();
-                msgCount++;
 
+                msgCount++;
+                msgCountToHowToTrade++;
 
                 if(msgCount === MAX_MESSAGES_BEFORE_ADVERTISE) {
                   await sendAdvertiseMessageToDestinationList(client, destinationListIds);
                   msgCount = 0;
+                }
+
+                if(msgCountToHowToTrade === MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
+                  await sendHowToTradeMessageToDestinationList(client, destinationListIds);
+                  msgCountToHowToTrade = 0;
                 }
               }
             }
