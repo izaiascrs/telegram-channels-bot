@@ -1,4 +1,4 @@
-import { LocalPath, MessageLike } from "telegram/define"
+import { LocalPath, MessageLike } from 'telegram/define';
 
 type THowToTradeMessage = {
   message: MessageLike,
@@ -6,8 +6,8 @@ type THowToTradeMessage = {
 }
 
 export const howToTradeMessages: THowToTradeMessage[] = [
-  {
-    message: '🤑👇👇👇\n' +
+	{
+		message: '🤑👇👇👇\n' +
     '\n' +
     '📌🗒️ **COMO APROVEITAR MELHOR NOSSOS SINAIS TOP:**\n'  +
     '\n' +
@@ -41,9 +41,9 @@ export const howToTradeMessages: THowToTradeMessage[] = [
     '\n' +
     '\n' +
     '💲👉 Se precisa saber mais sobre trade entre em contato com o nosso suporte e solicite materiais GRATUITOS 🆓',
-  },
-  {
-    message: '🤑📌 **TOP DE SINAIS CATALOGADOS LOGO MAIS.... VAI PERDER?!** 🗒️👇👇👇\n'  +
+	},
+	{
+		message: '🤑📌 **TOP DE SINAIS CATALOGADOS LOGO MAIS.... VAI PERDER?!** 🗒️👇👇👇\n'  +
     '\n' +
     '🚥 Como pegar os sinais catalogados?\n' +
     '\n' +
@@ -53,5 +53,5 @@ export const howToTradeMessages: THowToTradeMessage[] = [
     '\n' +
     '\n' +
     '🆘 Precisa de Ajuda? Chama o SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1',
-  }
-]
+	}
+];

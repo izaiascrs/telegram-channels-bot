@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/server.js",
     "dev": "npx tsx watch src/server.ts",
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./build && tsc",
+    "postbuild": "cp -r ./src/imgs ./build"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,13 @@
   },
   "devDependencies": {
     "@types/node": "^20.10.3",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.2.0",    
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.1",
     "tsx": "^4.6.2",

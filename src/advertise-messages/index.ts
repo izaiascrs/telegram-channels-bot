@@ -1,47 +1,51 @@
-import bigInt from "big-integer";
-import path from "path";
-import { Api } from "telegram";
-import { LocalPath, MessageLike } from "telegram/define";
+import path from 'path';
+import { LocalPath, MessageLike } from 'telegram/define';
+import { TMakeCounter, makeCounter } from '../utils/helpers';
 
-type TAdvertiseMessage = {
-  message: MessageLike,
-  file?: LocalPath
+export type TAdvertiseMessage = {
+  messagesIndexController: TMakeCounter,
+  messages: {
+    message: MessageLike,
+    file?: LocalPath
+  }[]
 }
 
-export const advertiveMessages : TAdvertiseMessage[] = [
-  {
-    message: '⚠️🚨🚨🚨 ATENÇÃO INICIANTES NO TRADE E NOVATOS DO CANAL‼️\n' +
-    '\n' +
-    '\n' +
-    '👉🤑 Antes de mais nada, SAIBA QUE PARA PARTICIPAR DO NOSSO CANAL E LUCRAR COM A GENTE... É GRÁTIS!\n' +
-    '\n' +
-    '\n' +
-    '🤑👉 Aqui é tão SIMPLES, RÁPIDO e FÁCIL para você começar a ganhar dinheiro, que você só precisa seguir esse 2 passos... \n' +
-    '👇👇👇\n' +
-    '\n' +
-    '\n' +
-    '✅ (1º PASSO): Crie conta GRATUITAMENTE com o nosso link (https://broker-qx.pro/sign-up/fast/?lid=460583) na Corretora QUOTEX para ganhar R$ 50.000 reais ou $ 10.000 dólares e treinar como LUCRAR COM A GENTE sem ARRISCAR o seu DINHEIRO NO INÍCIO!\n' +
-    '\n' +
-    '👉 VOCÊ PODE TESTAR a assertividade das NOSSAS OPERAÇÕES com RISCO ZERO!🤑👌\n' +
-    '\n' +
-    '\n' +
-    '✅ (2º PASSO):  🎥 Assista o vídeo abaixo para saber como: \n' +
-    '\n' +
-    '🔸 Como depositar na QUOTEX;💱🪙\n' +
-    'e\n' +
-    '🔸Como entrar com a gente nas operações e aproveitar nossos sinais. 😃👍\n' +
-    '__\n' +
-    '__\n' +
-    '\n' +
-    '🆘 Se precisar de ajuda, MANDE UMA MENSAGEM PARA O NOSSO SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1\n' +
-    '__\n' +
-    '__\n' +
-    '\n' +
-    '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre como funciona o nosso Canal GRATUITO😃👍👍👍',
-    file: path.join( __dirname, '..', 'imgs', 'photo-1.jpg'),
-  },
-  {
-    message: '🚀 COMO VOCÊ GANHA DINHEIRO AQUI?\n' +
+export const communityOfTradersAdvertiseMessages : TAdvertiseMessage = {
+	messagesIndexController: makeCounter(),
+	messages:[
+		{
+			message: '⚠️🚨🚨🚨 ATENÇÃO INICIANTES NO TRADE E NOVATOS DO CANAL‼️\n' +
+      '\n' +
+      '\n' +
+      '👉🤑 Antes de mais nada, SAIBA QUE PARA PARTICIPAR DO NOSSO CANAL E LUCRAR COM A GENTE... É GRÁTIS!\n' +
+      '\n' +
+      '\n' +
+      '🤑👉 Aqui é tão SIMPLES, RÁPIDO e FÁCIL para você começar a ganhar dinheiro, que você só precisa seguir esse 2 passos... \n' +
+      '👇👇👇\n' +
+      '\n' +
+      '\n' +
+      '✅ (1º PASSO): Crie conta GRATUITAMENTE com o nosso link (https://broker-qx.pro/sign-up/fast/?lid=460583) na Corretora QUOTEX para ganhar R$ 50.000 reais ou $ 10.000 dólares e treinar como LUCRAR COM A GENTE sem ARRISCAR o seu DINHEIRO NO INÍCIO!\n' +
+      '\n' +
+      '👉 VOCÊ PODE TESTAR a assertividade das NOSSAS OPERAÇÕES com RISCO ZERO!🤑👌\n' +
+      '\n' +
+      '\n' +
+      '✅ (2º PASSO):  🎥 Assista o vídeo abaixo para saber como: \n' +
+      '\n' +
+      '🔸 Como depositar na QUOTEX;💱🪙\n' +
+      'e\n' +
+      '🔸Como entrar com a gente nas operações e aproveitar nossos sinais. 😃👍\n' +
+      '__\n' +
+      '__\n' +
+      '\n' +
+      '🆘 Se precisar de ajuda, MANDE UMA MENSAGEM PARA O NOSSO SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1\n' +
+      '__\n' +
+      '__\n' +
+      '\n' +
+      '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre como funciona o nosso Canal GRATUITO😃👍👍👍',
+			file: path.join( __dirname, '..', 'imgs', 'comunidade-traders', 'img-1.jpg'),
+		},
+		{
+			message: '🚀 COMO VOCÊ GANHA DINHEIRO AQUI?\n' +
     '\n' +
     '\n' +
     '✅ TOTALMENTE GRATUITO para quem abrir conta com o nosso código 😃👍\n' +
@@ -54,17 +58,17 @@ export const advertiveMessages : TAdvertiseMessage[] = [
     '\n' +
     '✅ Lista de Sinais Catalogados e Lives periódicas 📹📈\n' +
     '\n' +
-    "✅ Suporte por telegram em até 24h, orientação de Contador, Advogado, Psicólogo, Pdf's , materiais de gerenciamento, operacional e psicotrade 📚⚖️\n" +
+    '✅ Suporte por telegram em até 24h, orientação de Contador, Advogado, Psicólogo, Pdf\'s , materiais de gerenciamento, operacional e psicotrade 📚⚖️\n' +
     '\n' +
     '✅ Bônus e descontos especiais 💰🎁\n' +
     '\n' +
     '🚨👉 Crie AGORA GRATUITAMENTE conta com o nosso link para ganhar R$ 50.000 reais ou $ 10.000 dólares e treinar como e BÔNUS DA CORRETORA 🤑👇 (https://broker-qx.pro/sign-up/fast/?lid=460583)  \n' +
     '\n' +
     '🆘 Precisa de Ajuda? Chama o SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1',
-    file: path.join( __dirname, '..', 'imgs', 'photo-2.jpg'),
-  },
-  {
-    message: '😲🤑😃🎁📉🤑📈🙂😃👇👇👇\n' +
+			file: path.join( __dirname, '..', 'imgs', 'comunidade-traders', 'img-2.jpg'),
+		},
+		{
+			message: '😲🤑😃🎁📉🤑📈🙂😃👇👇👇\n' +
     '\n' +
     '🎁 VANTAGENS E BENEFÍCIOS POR OPERAR COM A GENTE:😃👍\n' +
     '\n' +
@@ -88,9 +92,9 @@ export const advertiveMessages : TAdvertiseMessage[] = [
     '\n' +
     '\n' +
     '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre o nosso Canal GRATUITO😃�👍👍',
-  },
-  {
-    message: '❓❔❓❔❓❔❓❔❓❔❓❔❓❔❓❔\n' +
+		},
+		{
+			message: '❓❔❓❔❓❔❓❔❓❔❓❔❓❔❓❔\n' +
     '\n' +
     '🤷‍♂️ PERGUNTAS FREQUENTES E RESPOSTAS: 🤷‍♀️\n' +
     '\n' +
@@ -131,9 +135,9 @@ export const advertiveMessages : TAdvertiseMessage[] = [
     '\n' +
     '\n' +
     '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre o nosso Canal GRATUITO😃�👍👍',
-  },
-  {
-    message: '🌟 VOCÊ NÃO ESTÁ VIVENDO UM SONHO! É VERDADE MESMO!!! 🌈\n' +
+		},
+		{
+			message: '🌟 VOCÊ NÃO ESTÁ VIVENDO UM SONHO! É VERDADE MESMO!!! 🌈\n' +
     '\n' +
     '\n' +
     'Existe uma Sala de Sinais GRATUITA para pessoas novatas no trade ou que não sabem operar, ganharem dinheiro todo dia somente copiando e colando dezenas de operações SEM GALE. 🚀 \n' +       
@@ -152,12 +156,71 @@ export const advertiveMessages : TAdvertiseMessage[] = [
     '\n' +
     '\n' +
     '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre o nosso Canal GRATUITO😃�👍👍',
-  },
-  {
-    message: '🚨👉 Crie AGORA GRATUITAMENTE conta com o nosso link para ganhar R$ 50.000 reais ou $ 10.000 dólares e treinar como e BÔNUS DA CORRETORA 🤑👇 (https://broker-qx.pro/sign-up/fast/?lid=460583)  \n' +
+		},
+		{
+			message: '🚨👉 Crie AGORA GRATUITAMENTE conta com o nosso link para ganhar R$ 50.000 reais ou $ 10.000 dólares e treinar como e BÔNUS DA CORRETORA 🤑👇 (https://broker-qx.pro/sign-up/fast/?lid=460583)  \n' +
     '\n' +
     '🆘 Precisa de Ajuda? Chama o SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1\n' +
     '\n' +
     '📊 Daqui a pouco enviaremos mais dicas de como operar e informações sobre o nosso Canal GRATUITO😃�👍👍',
-  }
-];
+		}
+	]
+};
+
+export const topTraderTradersAdvertiseMessages : TAdvertiseMessage = {
+	messagesIndexController: makeCounter(),
+	messages:[
+		{
+			message: 'TENHA O SUCESSO QUE VOCÊ MERECE COM A SUA PRÓPRIA SALA DE SINAIS!\n' +
+      '\n' +
+      '🌟 Seja dono da sua Sala de Sinais e fature MUUUUIIITO! 💰\n' +
+      '\n' +
+      '🚀 Te ensinamos a lucrar, vender diariamente e gerenciar sua Sala. Se ganhar acima de R$ 20.000,00 por mês faz sentido para você?\n' +
+      '\n' +
+      '👉🏻 Vagas limitadas no preço promocional! \n' +
+      '\n' +
+      '👉🏻 Link: https://bit.ly/-Sua-Sala-De-Sinais-Agora',
+			file: path.join( __dirname, '..', 'imgs', 'top-traders', 'img-1.jpg'),
+		},
+		{
+			message: 'TENHA O SUCESSO QUE VOCÊ MERECE COM A SUA PRÓPRIA SALA DE SINAIS!\n' +
+    '\n' +
+    '🌟 Seja dono da sua Sala de Sinais e fature MUUUUIIITO! 💰\n' +
+    '\n' +
+    '🚀 Te ensinamos a lucrar, vender diariamente e gerenciar sua Sala. Se ganhar acima de R$ 20.000,00 por mês faz sentido para você?\n' +
+    '\n' +
+    '👉🏻 Vagas limitadas no preço promocional! \n' +
+    '\n' +
+    '👉🏻 Link: https://bit.ly/-Sua-Sala-De-Sinais-Agora',
+			file: path.join( __dirname, '..', 'imgs', 'top-traders', 'img-2.jpg'),
+		},    
+		{
+			message: '🤑 ESQUEÇA QUALQUER COISA SOBRE SALA DE SINAIS E PASSE PARA O PRÓXIMO NÍVEL COM A GENTE!\n' +
+      '\n' +
+      '🌟 Se os nossos Sinais Free já são fantásticos... Imagine VOCÊ ter 10 X mais com nossos sinais de assertividade média 95%, todo santo dia na nossa sala VIP!? 💰\n' +
+      '\n' +
+      '🚀 E o melhor! A Sala VIP é de graça!😱 Basta criar a sua conta na corretora pelo nosso link, mas se preferir, também pode optar por  investir só R$49,90 por mês para lucrar milhares de reais com a gente!🤩\n' +
+      '\n' +
+      'Vem lucrar...👇👇👇\n' +
+      '\n' +
+      '👉🏻 Link: https://bit.ly/Top-Traders-Quotex-Garanta-Agora',
+			file: path.join( __dirname, '..', 'imgs', 'top-traders', 'img-3.jpg'),
+		},
+		{
+			message: '💰 VEM PRA NA NOSSA SALA VIP 100% GRATUITA LUCRAR 10X MAIS!\n' +
+      '\n' +
+      '🌟SIIIMMM! EU SEI! Você já está lucrando com nossos Sinais Free? Mas, que tal lucrar 10x mais sem pagar nada!😱\n' +
+      '\n' +
+      '🤑Gostou né!?\n' +
+      '\n' +
+      '🚀 Basta criar sua conta no Quotex pelo nosso link abaixo e enviar o ID da sua conta ao Suporte.\n' +
+      '\n' +
+      'Mas corre tá! As Vagas limitadíssimas!\n' +
+      '\n' +
+      'Clique no link agora...👇👇👇\n' +
+      '\n' +
+      '👉🏻 Link: https://bit.ly/Corretora-Quotex-Clique-Aqui',
+			file: path.join( __dirname, '..', 'imgs', 'top-traders', 'img-4.jpg'),
+		}
+	]
+};
