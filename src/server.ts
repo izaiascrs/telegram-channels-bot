@@ -191,11 +191,11 @@ const client = new TelegramClient(
 						
 						setIsSendingMessage(true);
 
-						await applyFunctionAsync(
+						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMessagesToDestinationList,
 							client, messageObj
-						);
+						));
 
 						await applyFunctionAsync(
 							allDestinationList,

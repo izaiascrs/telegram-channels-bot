@@ -38,15 +38,15 @@ type TCreateNewMessageParams = {
 
 export function createNewSignalMessage(params: TCreateNewMessageParams) {
 	const { currencyPair, time, hours, signal } = params;
+	const isOtc = /otc/gi.test(currencyPair);
+	const broker = isOtc ? 'QUOTEX' : '';
 	if (signal && signal.length) {
 		const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
 		const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
-		// const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 📛 **${channelName}** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${hours.length ? '⏰' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
-		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${ hours.length ? '⏰ ' + hours+ '\n\n' : ''} ${CALL_PUT_MESSAGE}`;
+		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n ${ broker.length ? `🏛️ **${broker}** \n\n` : ''} 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${ hours.length ? '⏰ ' + hours+ ' \n\n' : ''} ${CALL_PUT_MESSAGE}`;
 		return formattedMessage;
-	} else {
-		// const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n 📛 **${channelName}** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
-		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
+	} else {		
+		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n ${ broker.length ? `🏛️ ${broker} \n` : ''} 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
 		return formattedMessage;
 	}
 }
@@ -60,6 +60,7 @@ export function extractDataFromMessage(msg: string) {
 	const time = /\d\s?m/igm.exec(msg); // select digit followed by the m char
 	const currencyPair = /\b[A-Z]{3}(?:\s|\/)[A-Z]{3}\b/g.exec(msg); // select 3 uppercase char followed by space or backslash followed 3 uppercase char  
 	const hours = /\d{2}:\d{2}/gm.exec(msg);
+	const otc = /otc/gi.exec(msg);
 
 	const timeCurrencyPair = {
 		currencyPair: '',
@@ -102,6 +103,21 @@ export function extractDataFromMessage(msg: string) {
 		}
 	}
 
+	if (otc?.length) {
+		if(timeCurrencyPair.currencyPair.length) {
+			const otcPair = timeCurrencyPair.currencyPair + ` (${otc[0]})`;
+			timeCurrencyPair.currencyPair = otcPair.toUpperCase();
+		}
+	}
+
+	if (timeCurrencyPair.currencyPair.length === 0 || timeCurrencyPair.time.length === 0) {
+		return {
+			currencyPair: '',
+			time: '',
+			hours: '',
+		};
+	}
+	
 	return timeCurrencyPair;
 }
 
@@ -146,7 +162,7 @@ export function checkIfMessageHasSignal(msg: string) {
 	let signal = /👎|👍|👇|👆|CALL|PUT|UP|DOWN|COMPRA|VENDA/g.exec(msg); // signals only uppercase
 	if(!signal) {
 		signal = /👎|👍|👇|👆|CALL|PUT|UP|DOWN|COMPRA|VENDA/gi.exec(msg); // signals uppercase and lowercase
-	}
+	}	
 	return signal;
 }
 
@@ -161,7 +177,7 @@ export function isSticker(media: Api.TypeMessageMedia | undefined) {
 }
 
 export function isValidMessage(msg: string) {
-	const isBalanceMessage = /relatório|relatorio|resultado|result/gim.test(msg);
+	const isBalanceMessage = /relatório|relatorio|report|resultado|result/gim.test(msg);
 	const isMessageBetweenRange = (msg.length > 0 && msg.length < 280);
 	return isMessageBetweenRange && !isBalanceMessage;
 }

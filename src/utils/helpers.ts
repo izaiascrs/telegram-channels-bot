@@ -70,7 +70,14 @@ async function listDialogs(client: TelegramClient) {
 }
 
 async function sendMessagesToDestinationList(client: TelegramClient, messageObj: TMessage, destinationListArray: TDestinationListData[]) {
-	const promises = destinationListArray.map((dest) => client.sendMessage(dest.id, messageObj));
+	const replaceBroker = (mixedChannel: boolean, msg: string) => {
+		if(mixedChannel === true) return ({ message: msg });
+		return ({
+			message: msg.replace(/🏛️.*?\n{1,3}/g, ''),
+		});		 
+	};
+
+	const promises = destinationListArray.map((dest) => client.sendMessage(dest.id, replaceBroker(dest.mixedChannel, messageObj.message)));
 	try {
 		await Promise.all(promises);		
 	} catch (error) {
@@ -78,20 +85,20 @@ async function sendMessagesToDestinationList(client: TelegramClient, messageObj:
 	}
 }
 
-async function sendAdvertiseMessageToDestinationList(client: TelegramClient, destinationListArray: TDestinationListData[], advertiseMessages: TAdvertiseMessage) {  
-	const { increment: incrementIndex, reset: resetIndex, value: indexValue } = advertiseMessages.messagesIndexController;
+async function sendAdvertiseMessageToDestinationList(client: TelegramClient, destItem: TDestinationListData, advertiseMessages: TAdvertiseMessage) {  
+	const { increment: incrementIndex, reset: resetIndex, value: indexValue } = destItem.advertiseMsgIndexController;
 	const { messages } = advertiseMessages;
 
 	if(indexValue() >= messages.length) {
 		resetIndex();
+		console.log('reset value');		
 	}
 
 	const currentMessage = messages[indexValue()];
 	incrementIndex();
 
-	const promises = destinationListArray.map((dest) => client.sendMessage(dest.id, currentMessage));
 	try {
-		await Promise.all(promises);		
+		await client.sendMessage(destItem.id, currentMessage);
 	} catch (error) {
 		console.log(error);
 	}
@@ -165,14 +172,24 @@ function makeIsSendingMessage() {
 	});
 }
 
-function isBreakTime() {
+function isBreakTime(date?: Date) {
 	const formattedTime = Intl.DateTimeFormat('pt-br', {
 		hour: '2-digit',
 		timeZone: 'America/Sao_Paulo',
+		hourCycle: 'h24',
 	});
-
-	const hours = Number(formattedTime.format(new Date()));
+	const currentDate = date || new Date();	
+	const hours = Number(formattedTime.format(currentDate));
 	return (hours >= 19 && hours < 22);
+}
+
+export function isFreeChannelWorkingTime(date?: Date) {
+	const currentDate = date || changeTimeZone(new Date(), 'America/Sao_Paulo');	
+	const hours = currentDate.getHours();
+	const minutes = currentDate.getMinutes();
+	const allowedHours = (hours >= 0 && hours <= 15);
+	const allowedHoursMinutes = hours === 15 ? minutes < 30 : true;
+	return (allowedHours && allowedHoursMinutes);
 }
 
 function applyFunctionAsync<T, R>(
@@ -192,13 +209,19 @@ function applyFunctionAsync<T, R>(
 }
 
 function filterFreeChannels(destinationListArray: TDestinationListData[], filter: boolean) {
-	if(filter) return destinationListArray.filter((list) => list.classification !== 'Free');
-	return destinationListArray;
+	if(filter) return destinationListArray.filter((list) => list.classification !== 'Free');	
+	const filtered = destinationListArray.filter((list) => { 
+		if(list.classification === 'Vip') return true;
+		if(list.hasWorkingTime === false) return true;		
+		if(list.hasWorkingTime && isFreeChannelWorkingTime()) return true;
+		return false;		
+	});	
+	return filtered;
 }
 
 function handleMsgCount(destinationListArray: TDestinationListData[][]) {
-	for (const destinationItem of destinationListArray) {
-		for (const { msgCounter } of destinationItem) {
+	for (const destinationItem of destinationListArray) {		
+		for (const { msgCounter } of destinationItem) {			
 			if(msgCounter.value() < MAX_MESSAGES_BEFORE_ADVERTISE) {
 				msgCounter.increment();				
 			}		
@@ -206,13 +229,29 @@ function handleMsgCount(destinationListArray: TDestinationListData[][]) {
 	}
 }
 
-async function handleSendAdvertiseMessage(client: TelegramClient, advertiseMessages: TAdvertiseMessage, destinationListArray: TDestinationListData[]) {
-	for (const { msgCounter } of destinationListArray) {
-		if(msgCounter.value() >= MAX_MESSAGES_BEFORE_ADVERTISE) {
-			await sendAdvertiseMessageToDestinationList(client, destinationListArray, advertiseMessages);
-			msgCounter.reset();
+async function handleSendAdvertiseMessage(client: TelegramClient, advertiseMessages: TAdvertiseMessage, destinationListArray: TDestinationListData[],) {
+	for await (const destItem of destinationListArray) {
+		if(destItem.msgCounter.value() >= destItem.advertiseMsgCount) {
+			await sendAdvertiseMessageToDestinationList(client, destItem, advertiseMessages);
+			destItem.msgCounter.reset();
 		}
-	}		
+	}
+}
+
+export function changeTimeZone(date: Date | string, timeZone: string) {
+	if (typeof date === 'string') {
+		return new Date(
+			new Date(date).toLocaleString('en', {
+				timeZone,
+			}),
+		);
+	}
+
+	return new Date(
+		date.toLocaleString('en', {
+			timeZone,
+		}),
+	);
 }
 
 export {
