@@ -120,17 +120,17 @@ const client = new TelegramClient(
 					const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
 					const messageObj = { message: CALL_PUT_MESSAGE };
 
-					await applyFunctionAsync(
+					await Promise.all(await applyFunctionAsync(
 						allDestinationList,
 						sendMessagesToDestinationList,
 						client, messageObj
-					);
+					)).catch(err => console.log(err));
 
-					await applyFunctionAsync(
+					await Promise.all(await applyFunctionAsync(
 						allDestinationList,
 						sendMandatoryMessage,
 						client
-					);
+					)).catch(err => console.log(err));
 
 					setChannelWaitingForSignal(channelById.id, false);
 					clearSignalTimeout();
@@ -174,11 +174,11 @@ const client = new TelegramClient(
 						setChannelWaitingForSignal(channelById.id, true);
 						createSignalTimeout();
 						
-						await applyFunctionAsync(
+						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMessagesToDestinationList,
 							client, messageObj
-						);						
+						)).catch(err => console.log(err));
 					}
 
 					const hasPairTimeAndSignal = ((currencyPair.length) && (time.length) && (hours.length) && (signal?.length));
@@ -197,11 +197,11 @@ const client = new TelegramClient(
 							client, messageObj
 						));
 
-						await applyFunctionAsync(
+						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMandatoryMessage,
 							client
-						);
+						)).catch(err => console.log(err));
 
 						if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 						
@@ -227,17 +227,17 @@ const client = new TelegramClient(
 						const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
 						const messageObj = { message: CALL_PUT_MESSAGE };
 
-						await applyFunctionAsync(
+						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMessagesToDestinationList,
 							client, messageObj
-						);
+						)).catch(err => console.log(err));
 
-						await applyFunctionAsync(
+						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMandatoryMessage,
 							client
-						);
+						)).catch(err => console.log(err));
 
 						setChannelWaitingForSignal(channelById.id, false);
 						clearSignalTimeout();
@@ -274,19 +274,19 @@ const client = new TelegramClient(
 				const CALL_PUT = createTradeSignalMessage(isCallOrPut);
 				const messageObj = { message: CALL_PUT };
 
-				await applyFunctionAsync(
+				await Promise.all(await applyFunctionAsync(
 					allDestinationList,
 					sendMessagesToDestinationList,
 					client, messageObj
-				);
+				)).catch(err => console.log(err));
 				
 				setChannelWaitingForSignal(channelById.id, false);
 
-				await applyFunctionAsync(
+				await Promise.all(await applyFunctionAsync(
 					allDestinationList,
 					sendMandatoryMessage,
 					client
-				);
+				)).catch(err => console.log(err));
 
 				clearSignalTimeout();
 				setIsSendingMessage(false);

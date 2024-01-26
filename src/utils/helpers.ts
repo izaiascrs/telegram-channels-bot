@@ -173,13 +173,8 @@ function makeIsSendingMessage() {
 }
 
 function isBreakTime(date?: Date) {
-	const formattedTime = Intl.DateTimeFormat('pt-br', {
-		hour: '2-digit',
-		timeZone: 'America/Sao_Paulo',
-		hourCycle: 'h24',
-	});
-	const currentDate = date || new Date();	
-	const hours = Number(formattedTime.format(currentDate));
+	const currentDate = date || changeTimeZone(new Date(), 'America/Sao_Paulo');	
+	const hours = Number(currentDate.getHours());
 	return (hours >= 19 && hours < 22);
 }
 
