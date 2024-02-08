@@ -41,7 +41,8 @@ import {
 } from './utils/handle-channels';
 
 import {
-	communityOfTradersAdvertiseMessages,
+	communityOfTradersFreeAdvertiseMessages,
+	communityOfTradersVipAdvertiseMessages,
 	topTraderTradersAdvertiseMessages
 } from './advertise-messages';
 
@@ -87,6 +88,9 @@ const client = new TelegramClient(
 (async () => {
 	await client.connect();
 	await client.getDialogs();
+
+	const communityOfTradersVipIds = communityOfTradersDestinationListIds.filter((c) => c.classification === 'Vip');
+	const communityOfTradersFreeIds = communityOfTradersDestinationListIds.filter((c) => c.classification === 'Free');
 
 	client.addEventHandler(messageHandler, new NewMessage({}));
 
@@ -141,7 +145,9 @@ const client = new TelegramClient(
 
 					if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
-					await handleSendAdvertiseMessage(client, communityOfTradersAdvertiseMessages, communityOfTradersDestinationListIds);
+					await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
+					await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
+
 					await handleSendAdvertiseMessage(client, topTraderTradersAdvertiseMessages, topTradersDestinationListIds);
 
 					if (msgCountToHowToTradeValue() === MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
@@ -205,7 +211,9 @@ const client = new TelegramClient(
 
 						if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 						
-						await handleSendAdvertiseMessage(client, communityOfTradersAdvertiseMessages, communityOfTradersDestinationListIds);
+						await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
+						await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
+
 						await handleSendAdvertiseMessage(client, topTraderTradersAdvertiseMessages, topTradersDestinationListIds);
 
 						if (msgCountToHowToTradeValue() >= MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
@@ -249,7 +257,9 @@ const client = new TelegramClient(
 
 						if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
-						await handleSendAdvertiseMessage(client, communityOfTradersAdvertiseMessages, communityOfTradersDestinationListIds);
+						await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
+						await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
+
 						await handleSendAdvertiseMessage(client, topTraderTradersAdvertiseMessages, topTradersDestinationListIds);
 
 						if (msgCountToHowToTradeValue() >= MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {
@@ -297,7 +307,9 @@ const client = new TelegramClient(
 
 				if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
-				await handleSendAdvertiseMessage(client, communityOfTradersAdvertiseMessages, communityOfTradersDestinationListIds);
+				await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
+				await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
+
 				await handleSendAdvertiseMessage(client, topTraderTradersAdvertiseMessages, topTradersDestinationListIds);
 
 				if (msgCountToHowToTradeValue() >= MAX_MESSAGES_BEFORE_HOW_TO_TRADE_MESSAGE) {

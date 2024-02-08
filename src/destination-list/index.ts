@@ -14,7 +14,7 @@ const communityOfTradersDestinationList: TDestinationList[] = [
 	{
 		type: 'Channel',
 		id: 1870260708,
-		name: '📉 QUOTEX - COMUNIDADE DOS TRADERS VIP 👥', 
+		name: '📉 QUOTEX - COMUNIDADE DOS TRADERS VIP 👥',
 		classification: 'Vip',
 		hasWorkingTime: false,
 		mixedChannel: false,

@@ -38,15 +38,14 @@ type TCreateNewMessageParams = {
 
 export function createNewSignalMessage(params: TCreateNewMessageParams) {
 	const { currencyPair, time, hours, signal } = params;
-	const isOtc = /otc/gi.test(currencyPair);
-	const broker = isOtc ? 'QUOTEX' : '';
+	const broker ='QUOTEX';
 	if (signal && signal.length) {
 		const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
 		const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
-		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n ${ broker.length ? `🏛️ **${broker}** \n\n` : ''} 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${ hours.length ? '⏰ ' + hours+ ' \n\n' : ''} ${CALL_PUT_MESSAGE}`;
+		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n\n 🏛️ **${broker}** \n\n 👉 ${currencyPair} \n\n ⏱ ${time} \n\n ${ hours.length ? '⏰ ' + hours+ ' \n\n' : ''} ${CALL_PUT_MESSAGE}`;
 		return formattedMessage;
 	} else {		
-		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n ${ broker.length ? `🏛️ ${broker} \n` : ''} 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
+		const formattedMessage = `⚠ **ATENÇÃO TRADERS!** \n 🏛️ **${broker}** \n\n 👉 ${currencyPair} \n ⏱ ${time} \n 🏁 Aguarde o momento de entrada`;
 		return formattedMessage;
 	}
 }

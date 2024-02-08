@@ -18,9 +18,8 @@ const {
 	value: getHowToTradeMessageIndexValue,
 } = makeCounter();
 
-async function listContacts(client: TelegramClient) {
+export async function listContacts(client: TelegramClient) {
 	try {
-
 		const apiContacts = await client.invoke(
 			new Api.contacts.GetContacts({})
 		) as unknown as { users: Api.User[]};
@@ -40,7 +39,7 @@ async function listContacts(client: TelegramClient) {
 	}
 }
 
-async function initialSetup(client: TelegramClient) {
+export async function initialSetup(client: TelegramClient) {
 	await client.start({
 		phoneNumber: async () => await input.text('Please enter your number: '),
 		password: async () => await input.text('Please enter your password: '),
@@ -53,7 +52,7 @@ async function initialSetup(client: TelegramClient) {
 
 }
 
-async function listDialogs(client: TelegramClient) {
+export async function listDialogs(client: TelegramClient) {
 	const apiDialogs = await client.getDialogs();
 
 	const dialogs = apiDialogs.map((d) => ({
@@ -69,7 +68,7 @@ async function listDialogs(client: TelegramClient) {
 	return dialogs;
 }
 
-async function sendMessagesToDestinationList(client: TelegramClient, messageObj: TMessage, destinationListArray: TDestinationListData[]) {
+export async function sendMessagesToDestinationList(client: TelegramClient, messageObj: TMessage, destinationListArray: TDestinationListData[]) {
 	const replaceBroker = (mixedChannel: boolean, msg: string) => {
 		if(mixedChannel === true) return ({ message: msg });
 		return ({
@@ -85,7 +84,7 @@ async function sendMessagesToDestinationList(client: TelegramClient, messageObj:
 	}
 }
 
-async function sendAdvertiseMessageToDestinationList(client: TelegramClient, destItem: TDestinationListData, advertiseMessages: TAdvertiseMessage) {  
+export async function sendAdvertiseMessageToDestinationList(client: TelegramClient, destItem: TDestinationListData, advertiseMessages: TAdvertiseMessage) {  
 	const { increment: incrementIndex, reset: resetIndex, value: indexValue } = destItem.advertiseMsgIndexController;
 	const { messages } = advertiseMessages;
 
@@ -104,7 +103,7 @@ async function sendAdvertiseMessageToDestinationList(client: TelegramClient, des
 	}
 }
 
-async function sendHowToTradeMessageToDestinationList(client: TelegramClient, destinationListArray: TDestinationListData[]) {
+export async function sendHowToTradeMessageToDestinationList(client: TelegramClient, destinationListArray: TDestinationListData[]) {
 	if(getHowToTradeMessageIndexValue() >= howToTradeMessages.length) {
 		resetHowToTradeMessageIndex();
 	}
@@ -115,7 +114,7 @@ async function sendHowToTradeMessageToDestinationList(client: TelegramClient, de
 	incrementHowToTradeMessageIndex();
 }
 
-async function sendMandatoryMessage(client: TelegramClient, destinationListArray: TDestinationListData[]) {
+export async function sendMandatoryMessage(client: TelegramClient, destinationListArray: TDestinationListData[]) {
 	const msgOb = {
 		message: '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n' +
     '\n' +
@@ -132,7 +131,7 @@ async function sendMandatoryMessage(client: TelegramClient, destinationListArray
 	await Promise.all(promises);
 }
 
-function makeCounter() {
+export function makeCounter() {
 	let count = 0;
 	return Object.freeze({
 		value: () => count,
@@ -141,7 +140,7 @@ function makeCounter() {
 	});
 }
 
-function makeSignalTimeout() {
+export function makeSignalTimeout() {
 	let signalTimeout: NodeJS.Timeout | null = null;
 	function clearSignalTimeout() {
 		if (signalTimeout) clearTimeout(signalTimeout);
@@ -164,7 +163,7 @@ function makeSignalTimeout() {
 	});
 }
 
-function makeIsSendingMessage() {
+export function makeIsSendingMessage() {
 	let isSendingMessage = false;
 	return Object.freeze({
 		set: (isSending: boolean) => isSendingMessage = isSending,
@@ -172,7 +171,7 @@ function makeIsSendingMessage() {
 	});
 }
 
-function isBreakTime(date?: Date) {
+export function isBreakTime(date?: Date) {
 	const currentDate = date || changeTimeZone(new Date(), 'America/Sao_Paulo');	
 	const hours = Number(currentDate.getHours());
 	return (hours >= 19 && hours < 22);
@@ -187,7 +186,7 @@ export function isFreeChannelWorkingTime(date?: Date) {
 	return (allowedHours && allowedHoursMinutes);
 }
 
-function applyFunctionAsync<T, R>(
+export function applyFunctionAsync<T, R>(
 	array: T[],
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	func: (...args: any[]) => R,
@@ -203,7 +202,7 @@ function applyFunctionAsync<T, R>(
 	});
 }
 
-function filterFreeChannels(destinationListArray: TDestinationListData[], filter: boolean) {
+export function filterFreeChannels(destinationListArray: TDestinationListData[], filter: boolean) {
 	if(filter) return destinationListArray.filter((list) => list.classification !== 'Free');	
 	const filtered = destinationListArray.filter((list) => { 
 		if(list.classification === 'Vip') return true;
@@ -214,7 +213,7 @@ function filterFreeChannels(destinationListArray: TDestinationListData[], filter
 	return filtered;
 }
 
-function handleMsgCount(destinationListArray: TDestinationListData[][]) {
+export function handleMsgCount(destinationListArray: TDestinationListData[][]) {
 	for (const destinationItem of destinationListArray) {		
 		for (const { msgCounter } of destinationItem) {			
 			if(msgCounter.value() < MAX_MESSAGES_BEFORE_ADVERTISE) {
@@ -224,7 +223,7 @@ function handleMsgCount(destinationListArray: TDestinationListData[][]) {
 	}
 }
 
-async function handleSendAdvertiseMessage(client: TelegramClient, advertiseMessages: TAdvertiseMessage, destinationListArray: TDestinationListData[],) {
+export async function handleSendAdvertiseMessage(client: TelegramClient, advertiseMessages: TAdvertiseMessage, destinationListArray: TDestinationListData[]) {
 	for await (const destItem of destinationListArray) {
 		if(destItem.msgCounter.value() >= destItem.advertiseMsgCount) {
 			await sendAdvertiseMessageToDestinationList(client, destItem, advertiseMessages);
@@ -249,8 +248,4 @@ export function changeTimeZone(date: Date | string, timeZone: string) {
 	);
 }
 
-export {
-	applyFunctionAsync, filterFreeChannels, handleMsgCount, handleSendAdvertiseMessage, initialSetup, isBreakTime, listContacts, listDialogs, makeCounter, makeIsSendingMessage, makeSignalTimeout, sendAdvertiseMessageToDestinationList,
-	sendHowToTradeMessageToDestinationList, sendMandatoryMessage, sendMessagesToDestinationList
-};
 
