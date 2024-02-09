@@ -203,7 +203,7 @@ export function applyFunctionAsync<T, R>(
 }
 
 export function filterFreeChannels(destinationListArray: TDestinationListData[], filter: boolean) {
-	if(filter) return destinationListArray.filter((list) => list.classification !== 'Free');	
+	if(filter) return destinationListArray.filter((list) => list.classification !== 'Free');
 	const filtered = destinationListArray.filter((list) => { 
 		if(list.classification === 'Vip') return true;
 		if(list.hasWorkingTime === false) return true;		
