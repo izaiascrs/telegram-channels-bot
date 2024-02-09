@@ -251,6 +251,12 @@ export const topTraderTradersAdvertiseMessages: TAdvertiseMessage = {
       '\n' +
       '💲👉 Se precisa saber \n' +
       'mais sobre trade entre em contato com o nosso suporte e solicite materiais GRATUITOS 🆓',
+		},
+		{
+			message: '⚠️ VEM GANHAR DINHEIRO COM A GENTE ‼️\n' +'\n' +
+      '👉🏦 Clique para Abrir na QUOTEX - https://bit.ly/Corretora-Quotex-Clique-Aqui\n' +'\n' +
+      '📈🆘📉 Não sabe Operar? Clique aqui 👉 Parte 1 - https://youtu.be/cADBvpgk7WU\n' +'\n' +
+      '👉 Parte 2 - https://youtu.be/k4MC2IAzHjE',
 		}
 	]
 };
