@@ -88,6 +88,18 @@ export const communityOfTradersFreeAdvertiseMessages: TAdvertiseMessage = {
       '✅ (2º PASSO):  🎥 Assista o vídeo fixado para saber como entrar com a gente nas operações e aproveitar nossos sinais QUOTEX. 😃👍\n' +'\n' +'\n' +
       '🆘 Se precisar de ajuda, MANDE UMA MENSAGEM PARA O NOSSO SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1',
 			file: path.join( __dirname, '..', 'imgs', 'comunidade-traders', 'img-1.jpg'),
+		},
+		{
+			message: 'ALCANCE O SUCESSO QUE VOCÊ MERECE COM SUA PRÓPRIA SALA DE SINAIS!\n' + '\n' + '\n' +
+      '💰 Seja o proprietário da sua sala de sinais e alcance grandes ganhos!\n' + '\n' +
+      '🚀 Ensinamos você a lucrar, vender diariamente e administrar sua sala. Se ganhar acima de R$ 20.000,00 por mês é o seu objetivo, nós podemos ajudar!\n' + '\n' +
+      '👉🏻 Vagas limitadas a preço promocional!\n' +'\n' +
+      '🚀 💵 Chama agora: https://wa.me/message/RMWFMXEKWKD3B1'
+		},
+		{
+			message: '⚠️ VEM GANHAR DINHEIRO COM A GENTE ‼️\n' +'\n' +
+      '👉🏦 Clique para Abrir na QUOTEX - (https://broker-qx.pro/sign-up/fast/?lid=460583)\n' +'\n' +
+      '📈🆘📉 Não sabe Operar? Clique aqui e acesse a playlist da Corretora 👉 https://www.youtube.com/@COMUNIDADEDOSTRADERS',
 		}
 	]
 };
@@ -165,6 +177,27 @@ export const communityOfTradersVipAdvertiseMessages: TAdvertiseMessage = {
       '✅ (2º PASSO):  🎥 Assista o vídeo fixado para saber como entrar com a gente nas operações e aproveitar nossos sinais QUOTEX. 😃👍\n' +'\n' +'\n' +
       '🆘 Se precisar de ajuda, MANDE UMA MENSAGEM PARA O NOSSO SUPORTE: https://wa.me/message/RMWFMXEKWKD3B1',
 			file: path.join( __dirname, '..', 'imgs', 'comunidade-traders', 'img-1.jpg'),
+		},
+		{
+			message: 'ALCANCE O SUCESSO QUE VOCÊ MERECE COM SUA PRÓPRIA SALA DE SINAIS!\n' + '\n' + '\n' +
+      '💰 Seja o proprietário da sua sala de sinais e alcance grandes ganhos!\n' + '\n' +
+      '🚀 Ensinamos você a lucrar, vender diariamente e administrar sua sala. Se ganhar acima de R$ 20.000,00 por mês é o seu objetivo, nós podemos ajudar!\n' + '\n' +
+      '👉🏻 Vagas limitadas a preço promocional!\n' +'\n' +
+      '🚀 💵 Chama agora: https://wa.me/message/RMWFMXEKWKD3B1'
+		},
+		{
+			message: '💰 VENHA PARA NOSSA SALA VIP TOTALMENTE GRATUITA E AUMENTE SEUS LUCROS EM 10X!\n' + '\n' + '\n' +
+      '🌟 Você que já está lucrando com nossos sinais grátis... Que tal aumentar seus ganhos sem gastar nada mais! 😱\n' + '\n' +
+      '🤑 Interessante, não é?\n' + '\n' +
+      '🚀 Basta criar sua conta no Quotex através do nosso link abaixo e enviar o ID da sua conta para o Suporte.\n' + '\n' +
+      'Mas corra!  As vagas são limitadíssimas!\n' + '\n' +
+      'Clique no link agora... 👇👇👇\n' +'\n' +
+      '(https://broker-qx.pro/sign-up/fast/?lid=460583)'
+		},
+		{
+			message: '⚠️ VEM GANHAR DINHEIRO COM A GENTE ‼️\n' +'\n' +
+      '👉🏦 Clique para Abrir na QUOTEX - (https://broker-qx.pro/sign-up/fast/?lid=460583)\n' +'\n' +
+      '📈🆘📉 Não sabe Operar? Clique aqui e acesse a playlist da Corretora 👉 https://www.youtube.com/@COMUNIDADEDOSTRADERS',
 		}
 	]
 };
