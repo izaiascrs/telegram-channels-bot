@@ -99,6 +99,7 @@ const client = new TelegramClient(
 
 		const messageData = extractDataFromMessageEvent(event);
 
+
 		const allDestinationList = [
 			filterFreeChannels(communityOfTradersDestinationListIds, getAllMsgCount() < MAX_MESSAGES_BEFORE_FREE_CHANNEL),
 			filterFreeChannels(topTradersDestinationListIds, getAllMsgCount() < MAX_MESSAGES_BEFORE_FREE_CHANNEL)

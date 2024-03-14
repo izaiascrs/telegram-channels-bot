@@ -43,22 +43,22 @@ const communityOfTradersDestinationList: TDestinationList[] = [
 
 const topTradersDestinationList: TDestinationList[] = [
 	// ************ REAL CHANNELS ************ //
-	{
-		type: 'Channel',
-		id: 2010654986,
-		name: '🧑‍💻TOP TRADERS QUOTEX FREE 👨‍💻',
-		classification: 'Free',
-		hasWorkingTime: false,
-		mixedChannel: false,
-	},
-	{
-		type: 'Channel',
-		id: 1944489390,
-		name: 'TOP TRADERS QUOTEX VIP',
-		classification: 'Vip',
-		hasWorkingTime: false,
-		mixedChannel: false,
-	},
+	// {
+	// 	type: 'Channel',
+	// 	id: 2010654986,
+	// 	name: '🧑‍💻TOP TRADERS QUOTEX FREE 👨‍💻',
+	// 	classification: 'Free',
+	// 	hasWorkingTime: false,
+	// 	mixedChannel: false,
+	// },
+	// {
+	// 	type: 'Channel',
+	// 	id: 1944489390,
+	// 	name: 'TOP TRADERS QUOTEX VIP',
+	// 	classification: 'Vip',
+	// 	hasWorkingTime: false,
+	// 	mixedChannel: false,
+	// },
 	// ************ REAL CHANNELS ************ //
 
 	// ************ TEST CHANNELS ************ //

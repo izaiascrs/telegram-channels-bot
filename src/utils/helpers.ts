@@ -116,15 +116,9 @@ export async function sendHowToTradeMessageToDestinationList(client: TelegramCli
 
 export async function sendMandatoryMessage(client: TelegramClient, destinationListArray: TDestinationListData[]) {
 	const msgOb = {
-		message: '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n' +
-    '\n' +
-    '\n' +
-    '⚠️ ATENÇÃO ‼️\n' +
-    '\n' +
-    '\n' +
-    'Teremos um novo sinal a qualquer momento📉📈\n' +
-    '\n' +
-    '👀 👀👉 ESTEJAM ATENTOS! 👀 👀',
+		message: '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨\n' +'\n' +
+    '⚠️ ATENÇÃO, TEREMOS UM SINAL EM INSTANTES 🕐\n' +'\n' +
+    '💥 Fiquem Atentos 📊',
 	};
 
 	const promises = destinationListArray.map((dest) => client.sendMessage(dest.id, msgOb));
@@ -247,5 +241,3 @@ export function changeTimeZone(date: Date | string, timeZone: string) {
 		}),
 	);
 }
-
-
