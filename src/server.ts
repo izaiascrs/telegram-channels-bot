@@ -72,7 +72,7 @@ const {
 } = makeCounter();
 
 const {
-	increment: incrementAllMsgCount, 
+	increment: incrementAllMsgCount,
 	reset: resetAllMsgCount,
 	value: getAllMsgCount,
 } = makeCounter();
@@ -84,10 +84,9 @@ const client = new TelegramClient(
 	{ connectionRetries: 5 },
 );
 
-
 (async () => {
 	await client.connect();
-	await client.getDialogs();
+	await client.getDialogs();	
 
 	const communityOfTradersVipIds = communityOfTradersDestinationListIds.filter((c) => c.classification === 'Vip');
 	const communityOfTradersFreeIds = communityOfTradersDestinationListIds.filter((c) => c.classification === 'Free');
@@ -95,11 +94,10 @@ const client = new TelegramClient(
 	client.addEventHandler(messageHandler, new NewMessage({}));
 
 	async function messageHandler(event: NewMessageEvent) {
-		if(isBreakTime()) return;
+		if (isBreakTime()) return;
 
-		const messageData = extractDataFromMessageEvent(event);
-
-
+		const messageData = extractDataFromMessageEvent(event);	
+		
 		const allDestinationList = [
 			filterFreeChannels(communityOfTradersDestinationListIds, getAllMsgCount() < MAX_MESSAGES_BEFORE_FREE_CHANNEL),
 			filterFreeChannels(topTradersDestinationListIds, getAllMsgCount() < MAX_MESSAGES_BEFORE_FREE_CHANNEL)
@@ -109,7 +107,7 @@ const client = new TelegramClient(
 
 		const channelById = findChannelById(messageData.chatId);
 		const channelBySignal = findChannelBySignal(true);
-		
+
 		if (!channelById) return;
 
 		if (checkIfMessageIsFromDifferentChannel(channelById, channelBySignal)) return;
@@ -140,11 +138,11 @@ const client = new TelegramClient(
 					setChannelWaitingForSignal(channelById.id, false);
 					clearSignalTimeout();
 
-					handleMsgCount(allDestinationList);					
+					handleMsgCount(allDestinationList);
 					incrementHowToTradeMsgCount();
 					incrementAllMsgCount();
 
-					if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
+					if (getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
 					await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
 					await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
@@ -174,13 +172,13 @@ const client = new TelegramClient(
 					const signalMessage = createNewSignalMessage({
 						currencyPair, time, hours, signal, channelName,
 					});
-					
+
 					const messageObj = { message: signalMessage };
 
 					if (signal === null || hours.length === 0) {
 						setChannelWaitingForSignal(channelById.id, true);
 						createSignalTimeout();
-						
+
 						await Promise.all(await applyFunctionAsync(
 							allDestinationList,
 							sendMessagesToDestinationList,
@@ -191,11 +189,11 @@ const client = new TelegramClient(
 					const hasPairTimeAndSignal = ((currencyPair.length) && (time.length) && (hours.length) && (signal?.length));
 					const isMessageWithSignal = (hasPairTimeAndSignal && (getIsSendingMessage() === false));
 
-					if (isMessageWithSignal) {						
+					if (isMessageWithSignal) {
 						handleMsgCount(allDestinationList);
 						incrementHowToTradeMsgCount();
 						incrementAllMsgCount();
-						
+
 						setIsSendingMessage(true);
 
 						await Promise.all(await applyFunctionAsync(
@@ -210,8 +208,8 @@ const client = new TelegramClient(
 							client
 						)).catch(err => console.log(err));
 
-						if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
-						
+						if (getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
+
 						await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
 						await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
 
@@ -251,12 +249,12 @@ const client = new TelegramClient(
 						setChannelWaitingForSignal(channelById.id, false);
 						clearSignalTimeout();
 						setIsSendingMessage(false);
-						
+
 						handleMsgCount(allDestinationList);
 						incrementHowToTradeMsgCount();
 						incrementAllMsgCount();
 
-						if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
+						if (getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
 						await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
 						await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
@@ -270,6 +268,9 @@ const client = new TelegramClient(
 					}
 				}
 			}
+
+			console.log('waiting for signal: ', channelById?.waitingForSignal);
+			console.log('message timeout: ', getSignalTimeout() !== null);
 		}
 
 		if (isSticker(messageData.media)) {
@@ -290,7 +291,7 @@ const client = new TelegramClient(
 					sendMessagesToDestinationList,
 					client, messageObj
 				)).catch(err => console.log(err));
-				
+
 				setChannelWaitingForSignal(channelById.id, false);
 
 				await Promise.all(await applyFunctionAsync(
@@ -301,12 +302,12 @@ const client = new TelegramClient(
 
 				clearSignalTimeout();
 				setIsSendingMessage(false);
-				
+
 				handleMsgCount(allDestinationList);
 				incrementHowToTradeMsgCount();
 				incrementAllMsgCount();
 
-				if(getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
+				if (getAllMsgCount() > MAX_MESSAGES_BEFORE_FREE_CHANNEL) resetAllMsgCount();
 
 				await handleSendAdvertiseMessage(client, communityOfTradersVipAdvertiseMessages, communityOfTradersVipIds);
 				await handleSendAdvertiseMessage(client, communityOfTradersFreeAdvertiseMessages, communityOfTradersFreeIds);
@@ -318,9 +319,9 @@ const client = new TelegramClient(
 					resetHowToTradeMsgCount();
 				}
 			}
-		}
 
-		console.log('waiting for signal: ', channelById?.waitingForSignal);
-		console.log('message timeout: ', getSignalTimeout() !== null);		
+			console.log('waiting for signal: ', channelById?.waitingForSignal);
+			console.log('message timeout: ', getSignalTimeout() !== null);
+		}		
 	}
 })();

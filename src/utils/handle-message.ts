@@ -6,20 +6,21 @@ export function checkIfStickIsCallOrPut(media: Api.MessageMediaDocument) {
 	const document = media.document as Api.Document;
 	const attributes = document.attributes;
 	const isSticker = attributes.find((a) => a.className === 'DocumentAttributeSticker') as Api.DocumentAttributeSticker;
-
+	
 	if (isSticker) {
 		if (
 			isSticker.alt.includes('👎') ||
-      isSticker.alt.includes('🔽') ||
-      isSticker.alt.includes('👇')
+			isSticker.alt.includes('🔽') ||
+			isSticker.alt.includes('👇')
 		) {
 			return 'PUT';
 		}
 
 		if (
 			isSticker.alt.includes('👍') ||
-      isSticker.alt.includes('🔼') ||
-      isSticker.alt.includes('👆')
+			isSticker.alt.includes('🔼') ||
+			isSticker.alt.includes('👆') ||
+			isSticker.alt.includes('☝️') 
 		) {
 			return 'CALL';
 		}
@@ -29,22 +30,22 @@ export function checkIfStickIsCallOrPut(media: Api.MessageMediaDocument) {
 }
 
 type TCreateNewMessageParams = {
-  currencyPair: string,
-  time: string,
-  hours: string,
-  signal: RegExpExecArray | null,
-  channelName: string
+	currencyPair: string,
+	time: string,
+	hours: string,
+	signal: RegExpExecArray | null,
+	channelName: string
 }
 
 export function createNewSignalMessage(params: TCreateNewMessageParams) {
 	const { currencyPair, time, hours, signal } = params;
-	const broker ='QUOTEX';
+	const broker = 'QUOTEX';
 	if (signal && signal.length) {
 		const CALL_PUT_SIGNAL = checkIfSignalMessageIsCallOrPut(signal[0]);
 		const CALL_PUT_MESSAGE = createTradeSignalMessage(CALL_PUT_SIGNAL);
-		const formattedMessage = `➡️ ANÁLISE FEITA \n\n 🏛️ **${broker}**\n📊 ATIVO: ${currencyPair}\n ${ hours.length ? '⏱ HORÁRIO: ' + hours+ '\n' : ''} ⏳ EXPIRAÇÃO: ${time}\n ${CALL_PUT_MESSAGE}`;
+		const formattedMessage = `➡️ ANÁLISE FEITA \n\n 🏛️ **${broker}**\n📊 ATIVO: ${currencyPair}\n ${hours.length ? '⏱ HORÁRIO: ' + hours + '\n' : ''} ⏳ EXPIRAÇÃO: ${time}\n ${CALL_PUT_MESSAGE}`;
 		return formattedMessage;
-	} else {		
+	} else {
 		const formattedMessage = `➡️ ANÁLISE FEITA \n\n 🏛️ **${broker}**\n📊 ATIVO: ${currencyPair}\n ⏳ EXPIRAÇÃO: ${time}\n 🏁 Aguarde o momento de entrada`;
 		return formattedMessage;
 	}
@@ -81,10 +82,10 @@ export function extractDataFromMessage(msg: string) {
 	if (currencyPair?.length) {
 		const pair = currencyPair[0].replace(/\s?\/?/g, '');
 		const isValidCurrencyPair = currenciesLookup.has(pair);
-    
-		if(isValidCurrencyPair) {
+
+		if (isValidCurrencyPair) {
 			const formattedPair = currencyPair[0].replace(/\s/, '/');
-			timeCurrencyPair.currencyPair = formattedPair;      
+			timeCurrencyPair.currencyPair = formattedPair;
 		}
 	} else {
 		const currencyPair = /\b[A-Z]{6}\b/g.exec(msg);
@@ -103,7 +104,7 @@ export function extractDataFromMessage(msg: string) {
 	}
 
 	if (otc?.length) {
-		if(timeCurrencyPair.currencyPair.length) {
+		if (timeCurrencyPair.currencyPair.length) {
 			const otcPair = timeCurrencyPair.currencyPair + ` (${otc[0]})`;
 			timeCurrencyPair.currencyPair = otcPair.toUpperCase();
 		}
@@ -116,7 +117,7 @@ export function extractDataFromMessage(msg: string) {
 			hours: '',
 		};
 	}
-	
+
 	return timeCurrencyPair;
 }
 
@@ -134,15 +135,15 @@ export function extractDataFromEspecialChannelMessage(msg: string) {
 		hours: '',
 	};
 
-	if(result?.length) return timeCurrencyPair;
+	if (result?.length) return timeCurrencyPair;
 
 	if (time?.length) {
 		const formattedTime = time[0].split('').reverse().join(' ');
 		timeCurrencyPair.time = formattedTime;
 	}
-  
+
 	if (currencyPair?.length) {
-		if(!isOTC(currencyPair[0])) {
+		if (!isOTC(currencyPair[0])) {
 			const isValidCurrencyPair = currenciesLookup.has(currencyPair[0]);
 			if (isValidCurrencyPair) {
 				timeCurrencyPair.currencyPair = currencyPair[0].replace(/(\w{3})/, '$1/');
@@ -159,9 +160,9 @@ export function extractDataFromEspecialChannelMessage(msg: string) {
 
 export function checkIfMessageHasSignal(msg: string) {
 	let signal = /👎|👍|👇|👆|CALL|PUT|UP|DOWN|COMPRA|VENDA/g.exec(msg); // signals only uppercase
-	if(!signal) {
+	if (!signal) {
 		signal = /👎|👍|👇|👆|CALL|PUT|UP|DOWN|COMPRA|VENDA/gi.exec(msg); // signals uppercase and lowercase
-	}	
+	}
 	return signal;
 }
 
@@ -182,6 +183,8 @@ export function isValidMessage(msg: string) {
 }
 
 export function extractDataFromMessageEvent(event: NewMessageEvent) {
+	const senderEntity = event._entities.get(String(event.chatId));
+	const channelName = (senderEntity && senderEntity.className === 'Channel') ? senderEntity.title : 'N/A';
 	const messageData = {
 		chatId: parseInt(String(event.chatId)),
 		isChannel: event.isChannel,
@@ -189,6 +192,7 @@ export function extractDataFromMessageEvent(event: NewMessageEvent) {
 		isPrivate: event.isPrivate,
 		message: event.message.message,
 		media: event?.message?.media,
+		channelName: channelName,
 	};
-	return messageData;  
+	return messageData;
 }
