@@ -462,103 +462,103 @@ export const channelsWatchList: TChannelInfo[] = [
 		waitingForSignal: false,
 	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001695472706,
-	// 	name: 'MOQ|Master Of Quotex',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001695472706,
+		name: 'MOQ|Master Of Quotex',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id:  -1001194604848,
-	// 	name: '🏳 CONSYSTE TRADERS 🏴',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id:  -1001194604848,
+		name: '🏳 CONSYSTE TRADERS 🏴',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id:  -1001942617161,
-	// 	name: 'MASHALLAH TRADER🌹',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id:  -1001942617161,
+		name: 'MASHALLAH TRADER🌹',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id:  -1001724386836,
-	// 	name: 'Technical Hitesh',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id:  -1001724386836,
+		name: 'Technical Hitesh',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001785019775,
-	// 	name: 'QUOTEX BUG SIGNALS 🤯🚀',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001785019775,
+		name: 'QUOTEX BUG SIGNALS 🤯🚀',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001504485479,
-	// 	name: 'CONSYSTE 1 GALE (FREE)',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001504485479,
+		name: 'CONSYSTE 1 GALE (FREE)',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001616832808,
-	// 	name: '🇦.🇷.🇹 𝘽𝙍𝘼𝙉𝘿',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001616832808,
+		name: '🇦.🇷.🇹 𝘽𝙍𝘼𝙉𝘿',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001941369397,      
-	// 	name: '💰VIVA DE RENDA SINAIS OFICIAL 💰',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001941369397,      
+		name: '💰VIVA DE RENDA SINAIS OFICIAL 💰',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001744454246,
-	// 	name: '💰SINAIS TRADER MÁGICO💰',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001744454246,
+		name: '💰SINAIS TRADER MÁGICO💰',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001643985368,
-	// 	name: 'Shahid Win Trader ( SWT )',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001643985368,
+		name: 'Shahid Win Trader ( SWT )',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001183357536,
-	// 	name: '🥇 Opções Binárias 🥇 Ribeiro 📊',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001183357536,
+		name: '🥇 Opções Binárias 🥇 Ribeiro 📊',
+		waitingForSignal: false,
+	},
 
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001970130820,
-	// 	name: '𝙎𝘼𝙔𝙉𝘼 𝙏𝙍𝘼𝘿𝙄𝙉𝙂',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001970130820,
+		name: '𝙎𝘼𝙔𝙉𝘼 𝙏𝙍𝘼𝘿𝙄𝙉𝙂',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001775614507,
-	// 	name: 'Discípulos Mágicos VIP 🔮',
-	// 	waitingForSignal: false,
-	// },
+	{
+		type: 'Channel',
+		id: -1001775614507,
+		name: 'Discípulos Mágicos VIP 🔮',
+		waitingForSignal: false,
+	},
 
-	// {
-	// 	type: 'Channel',
-	// 	id: -1001726245303,
-	// 	name: 'Canal Oficial-Henriqcruzz',
-	// 	waitingForSignal: false,
-	// }
+	{
+		type: 'Channel',
+		id: -1001726245303,
+		name: 'Canal Oficial-Henriqcruzz',
+		waitingForSignal: false,
+	}
 
 ];
