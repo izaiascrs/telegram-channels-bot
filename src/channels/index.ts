@@ -454,7 +454,7 @@ export const channelsWatchList: TChannelInfo[] = [
 		name: 'BINARY KING 🤑🤑🤑',
 		waitingForSignal: false,
 	},
-	
+
 	{
 		type: 'Channel',
 		id: -1001843614223,
@@ -471,21 +471,21 @@ export const channelsWatchList: TChannelInfo[] = [
 
 	{
 		type: 'Channel',
-		id:  -1001194604848,
+		id: -1001194604848,
 		name: '🏳 CONSYSTE TRADERS 🏴',
 		waitingForSignal: false,
 	},
 
 	{
 		type: 'Channel',
-		id:  -1001942617161,
+		id: -1001942617161,
 		name: 'MASHALLAH TRADER🌹',
 		waitingForSignal: false,
 	},
 
 	{
 		type: 'Channel',
-		id:  -1001724386836,
+		id: -1001724386836,
 		name: 'Technical Hitesh',
 		waitingForSignal: false,
 	},
@@ -513,7 +513,7 @@ export const channelsWatchList: TChannelInfo[] = [
 
 	{
 		type: 'Channel',
-		id: -1001941369397,      
+		id: -1001941369397,
 		name: '💰VIVA DE RENDA SINAIS OFICIAL 💰',
 		waitingForSignal: false,
 	},
@@ -538,7 +538,6 @@ export const channelsWatchList: TChannelInfo[] = [
 		name: '🥇 Opções Binárias 🥇 Ribeiro 📊',
 		waitingForSignal: false,
 	},
-
 
 	{
 		type: 'Channel',

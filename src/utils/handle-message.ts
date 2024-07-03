@@ -178,7 +178,7 @@ export function isSticker(media: Api.TypeMessageMedia | undefined) {
 
 export function isValidMessage(msg: string) {
 	const isBalanceMessage = /relatório|relatorio|report|resultado|result/gim.test(msg);
-	const isMessageBetweenRange = (msg.length > 0 && msg.length < 280);
+	const isMessageBetweenRange = (msg.length > 0 && msg.length < 350);
 	return isMessageBetweenRange && !isBalanceMessage;
 }
 
